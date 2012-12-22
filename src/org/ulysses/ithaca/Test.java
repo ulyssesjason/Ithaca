@@ -37,6 +37,7 @@ public class Test {
 
 }
 
+//use two stacks to simulate a queue
 class Stack2Queue{
 	List stack1=new List();
 	List stack2=new List();
@@ -59,6 +60,8 @@ class Stack2Queue{
 	
 }
 
+
+//Use two queues to simulate a stack
 class Queue2Stack{
 	List queue1=new List();
 	List queue2=new List();

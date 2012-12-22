@@ -45,7 +45,7 @@ public class List extends DataStructure {
 		}
 	}
 
-	// added a node after a known node(add_before function)
+	// added a node before a known node(add_before function)
 	public boolean insert(int index, Object object) {
 		if (index < 0 || index > size - 1) {
 			System.err.println("invalid index to insert");
