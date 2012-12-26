@@ -276,6 +276,14 @@ public class List extends DataStructure {
 		remove(head);
 		return temp;
 	}
+	
+	public void sort(){
+		
+	}
+	
+	private void sort(int start,int end){
+		
+	}
 
 	public boolean testList() {
 		if (isEmpty()) {
