@@ -5,6 +5,7 @@ public class List extends DataStructure {
 	private Node tail;
 	private int size;
 	private Node iterator;
+	private Node iterator2;// used for sorting-wise problem
 
 	public void clear() {
 		head = null;
@@ -43,6 +44,23 @@ public class List extends DataStructure {
 			tail = temp;
 			size++;
 		}
+	}
+
+	// Weiss v2 C-1.3
+	public boolean contains(Object obj) {
+		if (obj == null)
+			return false;
+
+		iterator2 = head;
+		while (iterator2 != tail) {
+			if (iterator2.getData().equals(obj))
+				return true;
+			iterator2 = iterator2.getNext();
+		}
+		if (tail.getData().equals(obj))
+			return true;
+
+		return false;
 	}
 
 	// added a node before a known node(add_before function)
@@ -276,15 +294,38 @@ public class List extends DataStructure {
 		remove(head);
 		return temp;
 	}
-	
-	public void sort(){
-		
-	}
-	
-	private void sort(int start,int end){
-		
+
+	public void sort() {
+		sort(0, size - 1);
 	}
 
+	private void sort(int start, int end) {
+		int middle = (start + end) / 2;
+		sort(start, middle);
+		sort(middle + 1, end);
+		List res = new List();
+		iterator = getNode(start);
+		iterator2 = getNode(middle + 1);
+
+	}
+
+	// Exchange two nodes with index(exchange data)
+	public void exchange(int first, int second) {
+		if (first >= 0 && first <= size - 1 && second >= 0
+				&& second <= size - 1) {
+			Object firstObject = getNode(first).getData();
+			Object secondObject = getNode(second).getData();
+			Object temp = firstObject;
+			getNode(first).setData(secondObject);
+			getNode(second).setData(temp);
+		}
+
+	}
+
+	public void neighbour(int first,int second){
+		
+	}
+	
 	public boolean testList() {
 		if (isEmpty()) {
 			System.err.println("List is empty");

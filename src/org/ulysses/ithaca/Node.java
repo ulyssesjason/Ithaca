@@ -1,6 +1,6 @@
 package org.ulysses.ithaca;
 
-public class Node implements Iterable {
+public class Node implements Iterable, Comparable {
 	private Object data;
 	private Node next;
 	private Node previous;
@@ -90,15 +90,37 @@ public class Node implements Iterable {
 		node.setPrevious(this);
 	}
 
+	// change the sequence between this node and next node.
 	public void turn() {
-		Node temp = new Node();
-		temp = this.getNext();
-		this.setNext(this.getPrevious());
-		this.setPrevious(temp);
+		if (this.next != null) {
+			Node temp = new Node();
+			temp = this.getNext();
+			this.setNext(this.getPrevious());
+			this.setPrevious(temp);
+		}
+
 	}
 
 	public String toString() {
 		return data.toString();
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		if (o instanceof Node) {
+			if (((Node) o).getData() instanceof Comparable) {
+
+				Comparable target = (Comparable) ((Node) o).getData();
+				return target.compareTo(data);
+
+			}else{
+				return data.toString().charAt(0)> ((Node)o).getData().toString().charAt(0)?1:-1;
+			}
+		} else {
+			return -1;
+		}
+
+
 	}
 
 }
