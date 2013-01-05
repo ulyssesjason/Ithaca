@@ -107,19 +107,22 @@ public class Node implements Iterable, Comparable {
 
 	@Override
 	public int compareTo(Object o) {
+
 		if (o instanceof Node) {
-			if (((Node) o).getData() instanceof Comparable) {
+			// Use getclass to determine if two object belongs to same comparable class
+			if (((Node) o).getData() instanceof Comparable
+					&& (data.getClass() == ((Node) o).getData().getClass())) {
 
 				Comparable target = (Comparable) ((Node) o).getData();
-				return target.compareTo(data);
+				return -target.compareTo(data);
 
-			}else{
-				return data.toString().charAt(0)> ((Node)o).getData().toString().charAt(0)?1:-1;
+			} else {
+				return data.toString().charAt(0) > ((Node) o).getData()
+						.toString().charAt(0) ? 1 : -1;
 			}
 		} else {
 			return -1;
 		}
-
 
 	}
 

@@ -1,11 +1,14 @@
 package org.ulysses.ithaca;
 
+import java.util.SortedMap;
+
 public class List extends DataStructure {
 	private Node head;
 	private Node tail;
 	private int size;
 	private Node iterator;
 	private Node iterator2;// used for sorting-wise problem
+	private boolean sorted=false;
 
 	public void clear() {
 		head = null;
@@ -18,6 +21,10 @@ public class List extends DataStructure {
 	public List() {
 		clear();
 
+	}
+	
+	public boolean sorted(){
+		return sorted;
 	}
 
 	public List(Object... objects) {
@@ -57,10 +64,9 @@ public class List extends DataStructure {
 				return true;
 			iterator2 = iterator2.getNext();
 		}
-		if (tail.getData().equals(obj))
-			return true;
 
-		return false;
+
+		return tail.getData().equals(obj);
 	}
 
 	// added a node before a known node(add_before function)
@@ -85,7 +91,7 @@ public class List extends DataStructure {
 		return true;
 	}
 
-	public boolean removeIndex(int index) {
+	public boolean remove(int index) {
 		if (index < 0 || index > size - 1) {
 			System.err.println("invalid index to remove");
 			return false;
@@ -296,17 +302,35 @@ public class List extends DataStructure {
 	}
 
 	public void sort() {
-		sort(0, size - 1);
+		BubbleSort();
 	}
 
 	private void sort(int start, int end) {
 		int middle = (start + end) / 2;
 		sort(start, middle);
 		sort(middle + 1, end);
-		List res = new List();
-		iterator = getNode(start);
-		iterator2 = getNode(middle + 1);
 
+	}
+
+//	Stupid way implementing the bubble sort
+	private void BubbleSort() {
+		iterator = head;
+		int counter = size - 1;
+		while (counter > 0) {
+			while (iterator != tail) {
+				if (iterator.compareTo(iterator.getNext()) > 0) {
+					System.out.println("swap " + iterator.toString() + " and "
+							+ iterator.getNext().toString());
+					swap(iterator, iterator.getNext());
+
+				}
+				iterator = iterator.getNext();
+			}
+			counter--;
+			iterator = head;
+
+		}
+		sorted=true;
 	}
 
 	// Exchange two nodes with index(exchange data)
@@ -322,10 +346,21 @@ public class List extends DataStructure {
 
 	}
 
-	public void neighbour(int first,int second){
-		
+	public void swap(Node first, Node second) {
+		if (second == tail)
+			tail = first;
+		if (first == head)
+			head = second;
+
+		first.getPrevious().followBy(second);
+		first.followBy(second.getNext());
+		second.followBy(first);
+
 	}
 	
+	
+	
+
 	public boolean testList() {
 		if (isEmpty()) {
 			System.err.println("List is empty");
