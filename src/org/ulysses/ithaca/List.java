@@ -1,14 +1,11 @@
 package org.ulysses.ithaca;
 
-import java.util.SortedMap;
-
 public class List extends DataStructure {
 	private Node head;
 	private Node tail;
 	private int size;
 	private Node iterator;
-	private Node iterator2;// used for sorting-wise problem
-	private boolean sorted=false;
+	private boolean sorted = false;
 
 	public void clear() {
 		head = null;
@@ -22,8 +19,8 @@ public class List extends DataStructure {
 		clear();
 
 	}
-	
-	public boolean sorted(){
+
+	public boolean sorted() {
 		return sorted;
 	}
 
@@ -58,13 +55,12 @@ public class List extends DataStructure {
 		if (obj == null)
 			return false;
 
-		iterator2 = head;
-		while (iterator2 != tail) {
-			if (iterator2.getData().equals(obj))
+		iterator = head;
+		while (!reachEnd()) {
+			if (iterator.getData().equals(obj))
 				return true;
-			iterator2 = iterator2.getNext();
+			iterator = iterator.getNext();
 		}
-
 
 		return tail.getData().equals(obj);
 	}
@@ -130,7 +126,7 @@ public class List extends DataStructure {
 				return true;
 			}
 			iterator = iterator.getNext();
-		} while (iterator != tail);
+		} while (!reachEnd());
 
 		if (tail.getData().equals(object))
 			remove(tail);
@@ -140,7 +136,7 @@ public class List extends DataStructure {
 
 	public boolean removeAll(Object object) {
 		iterator = head;
-		while (iterator != tail) {
+		while (!reachEnd()) {
 			if (iterator.getData().equals(object)) {
 				Node temp = new Node(iterator);
 				iterator = temp.getNext();
@@ -219,7 +215,7 @@ public class List extends DataStructure {
 			iterator = head;
 			StringBuffer sb = new StringBuffer("");
 
-			while (iterator != tail) {
+			while (!reachEnd()) {
 				sb.append(iterator.toString() + " ");
 				iterator = iterator.getNext();
 			}
@@ -255,7 +251,16 @@ public class List extends DataStructure {
 	}
 
 	public Node Iterator() {
-		return iterator;
+		Node outsideIterator=new Node();
+		outsideIterator=iterator;
+		iterator=head;
+		return outsideIterator;
+	}
+
+
+
+	public boolean reachEnd() {
+		return iterator == tail ? true : false;
 	}
 
 	public void reverse() {
@@ -312,15 +317,16 @@ public class List extends DataStructure {
 
 	}
 
-//	Stupid way implementing the bubble sort
+	// Stupid way implementing the bubble sort
 	private void BubbleSort() {
 		iterator = head;
 		int counter = size - 1;
 		while (counter > 0) {
-			while (iterator != tail) {
+			while (!reachEnd()) {
 				if (iterator.compareTo(iterator.getNext()) > 0) {
-					System.out.println("swap " + iterator.toString() + " and "
-							+ iterator.getNext().toString());
+					// System.out.println("swap " + iterator.toString() +
+					// " and "
+					// + iterator.getNext().toString());
 					swap(iterator, iterator.getNext());
 
 				}
@@ -330,7 +336,7 @@ public class List extends DataStructure {
 			iterator = head;
 
 		}
-		sorted=true;
+		sorted = true;
 	}
 
 	// Exchange two nodes with index(exchange data)
@@ -357,9 +363,6 @@ public class List extends DataStructure {
 		second.followBy(first);
 
 	}
-	
-	
-	
 
 	public boolean testList() {
 		if (isEmpty()) {

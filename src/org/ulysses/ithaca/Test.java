@@ -2,23 +2,22 @@ package org.ulysses.ithaca;
 
 public class Test {
 	public static void main(String[] args) {
-		final List list = new List(1, 2, 3, 5, 6, 5, 2, 32, 32, 434, 2, "a",
-				"b", "c", "ee");
-		final List list2 = new List(1, 2, 3, 7, 6, 8, 2, 32, 32, 434, 2);
-		
-		int[] a={1,2,3,4,5,6,7,8};
-		int[] b={1,3,5,7};
-		
-		
+//		final List list = new List(1, 2, 3, 5, 6, 5, 2, 32, 32, 434, 2, "a",
+//				"b", "c", "ee");
+//		final List list2 = new List(1, 2, 3, 7, 6, 8, 2, 32, 32, 434, 2);
 
 		System.out.println(runningTime(new Callback() {
 
 			@Override
 			public void execute() {
+
+				List list = new List(1, 2, 3);
+				List list2 = new List(1, 2);
 				
-				
-				List list3=new List();
-				list3=Tool.intersect(list, list2);
+				list.sort();
+				list2.sort();
+
+				List list3=Tool.intersection(list, list2);
 				list3.testList();
 			}
 		}));
@@ -30,13 +29,6 @@ public class Test {
 		callback.execute();
 		long end = System.currentTimeMillis();
 		return (end - start) * 1000;
-	}
-	
-	public static Object[] sortedIntersect(Object[] a1,Object[] a2){
-		
-		
-		return a2;
-		
 	}
 
 }
