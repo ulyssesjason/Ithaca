@@ -54,15 +54,44 @@ public class List extends DataStructure {
 	public boolean contains(Object obj) {
 		if (obj == null)
 			return false;
+		if (isEmpty())
+			return false;
+		if (!isBuilt())
+			return head.getData().equals(obj);
 
 		iterator = head;
-		while (!reachEnd()) {
+		while (!reachEnd(iterator)) {
 			if (iterator.getData().equals(obj))
 				return true;
 			iterator = iterator.getNext();
 		}
 
 		return tail.getData().equals(obj);
+	}
+
+	public int search(Object obj) {
+		if (obj == null || isEmpty() || !contains(obj))
+			return -1;
+		if (!isBuilt())
+			return 0;
+
+		iterator = head;
+		int index = 0;
+		while (!reachEnd(iterator)) {
+			if (iterator.getData().equals(obj)) {
+				return index;
+			} else {
+				iterator = iterator.getNext();
+				index++;
+			}
+
+		}
+		if (tail.getData().equals(obj)) {
+			return size - 1;
+		} else {
+			return index;
+		}
+
 	}
 
 	// added a node before a known node(add_before function)
@@ -72,22 +101,35 @@ public class List extends DataStructure {
 			return false;
 		}
 
-		if (index == 0) {
-			append(object);
-			tail = tail.getPrevious();
-			head = head.getPrevious();
+		Node temp = new Node(object);
+		if (isEmpty()) {
+			head = temp;
+		} else if (!isBuilt()) {
+			tail = head;
+			head = temp;
+			head.followBy(tail);
+			tail.followBy(head);
 		} else {
-			Node temp = new Node(object);
-			Node target = getNode(index);
-			target.getPrevious().followBy(temp);
-			temp.followBy(target);
-			size++;
+			if (index == 0) {
+
+				temp.followBy(head);
+				tail.followBy(temp);
+				head = temp;
+
+			} else {
+
+				Node target = getNode(index);
+				target.getPrevious().followBy(temp);
+				temp.followBy(target);
+
+			}
 		}
 
+		size++;
 		return true;
 	}
 
-	public boolean remove(int index) {
+	public boolean removeIndex(int index) {
 		if (index < 0 || index > size - 1) {
 			System.err.println("invalid index to remove");
 			return false;
@@ -108,10 +150,17 @@ public class List extends DataStructure {
 			return true;
 		}
 		node.getPrevious().followBy(node.getNext());
-		if (node == head)
+		node.setDeleted();
+		if (node == head) {
 			head = head.getNext();
-		if (node == tail)
+			node = null;
+		} else if (node == tail) {
 			tail = tail.getPrevious();
+			node = null;
+		} else {
+			node = null;
+		}
+
 		size--;
 		return true;
 	}
@@ -126,7 +175,7 @@ public class List extends DataStructure {
 				return true;
 			}
 			iterator = iterator.getNext();
-		} while (!reachEnd());
+		} while (!reachEnd(iterator));
 
 		if (tail.getData().equals(object))
 			remove(tail);
@@ -136,7 +185,7 @@ public class List extends DataStructure {
 
 	public boolean removeAll(Object object) {
 		iterator = head;
-		while (!reachEnd()) {
+		while (!reachEnd(iterator)) {
 			if (iterator.getData().equals(object)) {
 				Node temp = new Node(iterator);
 				iterator = temp.getNext();
@@ -215,8 +264,8 @@ public class List extends DataStructure {
 			iterator = head;
 			StringBuffer sb = new StringBuffer("");
 
-			while (!reachEnd()) {
-				sb.append(iterator.toString() + " ");
+			while (!reachEnd(iterator)) {
+				sb.append(iterator.toString() + "-");
 				iterator = iterator.getNext();
 			}
 			sb.append(tail.toString());
@@ -251,16 +300,17 @@ public class List extends DataStructure {
 	}
 
 	public Node Iterator() {
-		Node outsideIterator=new Node();
-		outsideIterator=iterator;
-		iterator=head;
-		return outsideIterator;
+		iterator = head;
+
+		return this.iterator;
 	}
 
+	public Node end() {
+		return tail;
+	}
 
-
-	public boolean reachEnd() {
-		return iterator == tail ? true : false;
+	public boolean reachEnd(Node it) {
+		return it == tail ? true : false;
 	}
 
 	public void reverse() {
@@ -322,7 +372,7 @@ public class List extends DataStructure {
 		iterator = head;
 		int counter = size - 1;
 		while (counter > 0) {
-			while (!reachEnd()) {
+			while (!reachEnd(iterator)) {
 				if (iterator.compareTo(iterator.getNext()) > 0) {
 					// System.out.println("swap " + iterator.toString() +
 					// " and "
@@ -352,7 +402,7 @@ public class List extends DataStructure {
 
 	}
 
-	public void swap(Node first, Node second) {
+	private void swap(Node first, Node second) {
 		if (second == tail)
 			tail = first;
 		if (first == head)
@@ -362,6 +412,10 @@ public class List extends DataStructure {
 		first.followBy(second.getNext());
 		second.followBy(first);
 
+	}
+
+	public void swap(int firstIndex, int secondIndex) {
+		swap(getNode(firstIndex), getNode(secondIndex));
 	}
 
 	public boolean testList() {

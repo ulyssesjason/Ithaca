@@ -4,9 +4,18 @@ public class Node implements Iterable, Comparable {
 	private Object data;
 	private Node next;
 	private Node previous;
+	private boolean deleted;
 
 	public Node() {
 		clear();
+	}
+
+	public boolean deleted() {
+		return deleted;
+	}
+
+	public void setDeleted() {
+		deleted = true;
 	}
 
 	public Node(Node node) {
@@ -14,6 +23,7 @@ public class Node implements Iterable, Comparable {
 		data = node.getData();
 		next = node.getNext();
 		previous = node.getPrevious();
+		deleted = false;
 	}
 
 	private void clear() {
@@ -109,7 +119,8 @@ public class Node implements Iterable, Comparable {
 	public int compareTo(Object o) {
 
 		if (o instanceof Node) {
-			// Use getclass to determine if two object belongs to same comparable class
+			// Use getclass to determine if two object belongs to same
+			// comparable class
 			if (((Node) o).getData() instanceof Comparable
 					&& (data.getClass() == ((Node) o).getData().getClass())) {
 
