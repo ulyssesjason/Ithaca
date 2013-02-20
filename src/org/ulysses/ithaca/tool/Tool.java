@@ -1,4 +1,8 @@
-package org.ulysses.ithaca;
+package org.ulysses.ithaca.tool;
+
+import org.ulysses.ithaca.Callback;
+import org.ulysses.ithaca.List;
+import org.ulysses.ithaca.Node;
 
 public class Tool {
 	
@@ -156,20 +160,6 @@ public class Tool {
 			n--;
 		}
 		return josephusIterator;
-
-	}
-
-	public static void detectedBalancedSymbol(String statement) {
-		List list = new List();
-
-		for (int i = 0; i < statement.length(); i++) {
-
-		}
-	}
-
-	public boolean symbolMatch(char c1, char c2) {
-
-		return false;
 
 	}
 

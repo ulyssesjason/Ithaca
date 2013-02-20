@@ -2,6 +2,8 @@ package org.ulysses.ithaca;
 
 import java.util.Random;
 
+import org.ulysses.ithaca.tool.Tool;
+
 public class Test {
 	public static void main(String[] args) {
 
@@ -209,3 +211,6 @@ class llSelfAdjustList {
 		return data.toString();
 	}
 }
+
+
+
